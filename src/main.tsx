@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import App from "./App.tsx";
 import "./index.css";
 import { StoreContext } from "./stores/StoreContext.ts";
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <StoreContext.Provider value={rootState}>
         <BrowserRouter>
           <App />
+          <ReactQueryDevtools initialIsOpen={false} />
         </BrowserRouter>
       </StoreContext.Provider>
     </QueryClientProvider>

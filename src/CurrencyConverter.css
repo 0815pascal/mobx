@@ -1,0 +1,98 @@
+#currencyConverter * {
+    font-size: 1rem;
+}
+
+#currencyConverter label {
+    margin-right: 1rem;
+    text-align: left;
+}
+
+#currencyConverter button {
+    margin-top: 1rem;
+}
+
+#currencyConverter fieldset {
+border-radius: .25rem;
+border-width: 1px;
+}
+
+#currencyConverter fieldset legend {
+        padding: 0 .5rem;
+            font-size: .9rem;
+}
+
+#currencyConverter mrow {
+    margin-right: 1rem;
+}
+
+#currencyConverter p {
+    text-align: left;
+    margin: .5rem 0;
+}
+
+#currencyConverter table {
+    width: 100%;
+    ;
+}
+
+#currencyConverter #invoiceCurrency,
+#currencyConverter #policyCurrency {
+    font-family: monospace;
+    display: flex;
+    justify-content: flex-end;
+    vertical-align: middle;
+    padding-top: 1px;
+}
+
+#currencyConverter #notificationDate {
+    border: none;
+    font-family: monospace;
+    text-align: right;
+    background-color: transparent;
+}
+
+#currencyConverter #notificationDateLabel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 0;
+}
+
+#currencyConverter #notificationDateLabel {
+    margin-right: -1.2rem;
+}
+
+#currencyConverter #resetDate {
+    margin-left: .5rem;
+    font-size: .9rem;
+    background-color: #3b3b3b;
+    border: 1px solid #858585;
+    cursor: pointer;
+    border-radius: .25rem;
+    transition: border-color 0.25s;
+}
+
+#currencyConverter #resetDate:hover {
+border-color: #646cff;
+}
+#currencyConverter #resetData:focus, #currencyConverter #resetData:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
+
+#currencyConverter time,
+#currencyConverter select,
+#currencyConverter #amount,
+#currencyConverter #date {
+    font-size: .8rem;
+    font-family: monospace
+}
+
+#currencyConverter #amount {
+    width: 10em;
+    margin-right: .5rem;
+}
+
+#currencyConverter .cellLabel {
+    text-align: left;
+    vertical-align: text-bottom;
+}

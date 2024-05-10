@@ -17,4 +17,12 @@ export class LoadingStore {
         console.log('hide loader')
         this.isLoading = false;
     }
+
+    // Simulate a fetch request
+    simulateFetch = async () => {
+    this.showLoader();
+    setTimeout(() => {
+      this.hideLoader();
+    }, 3000); // Simulates a network delay of 3 seconds
+  };
 }

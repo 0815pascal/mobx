@@ -1,66 +1,24 @@
 import "./App.css";
 import { observer } from "mobx-react-lite";
-import { useStores } from "./hooks/useStores";
-import NewComponent from "./NewComponent";
-import { Link, Route, Routes, useLocation } from "react-router-dom";
+import ForeignExchange from "./CurrencyConverter";
+import { Link, Route, Routes } from "react-router-dom";
 import { Home } from "./Home";
-import { useEffect } from "react";
-import { faker } from "@faker-js/faker";
-import { useQuery } from "@tanstack/react-query";
-
-type Person = {
-  name: string;
-  email: string;
-}
+import FakePeople from "./FakePeople";
 
 const App = observer(() => {
-  const { loadingStore } = useStores();
-  const location = useLocation();
-
-  const fetchData = async (): Promise<Person> => {
-          loadingStore.showLoader();
-    return new Promise((resolve) =>
-      setTimeout(() => {
-        resolve({
-          name: faker.person.fullName(),
-          email: faker.internet.email(),
-        });
-      }, 1000)
-    );
-  };
-
-  const { data, isFetching, isError, error } = useQuery({
-    queryKey: ["data", location.pathname],
-    queryFn: fetchData,
-  });
-
-
-
-  useEffect(() => {
-    console.log('isError', isError, 'isFetching', isFetching, 'data', data)
-    if (!isError && !isFetching) {
-      console.log(data)
-      loadingStore.hideLoader();
-    }
-  }, [data, isError, isFetching, loadingStore]);
-
-  useEffect(() => {
-    if (error) {
-      console.log("Error fetching data:", error);
-    }
-  }, [error]);
-
+  
   return (
     <>
       <header>
-        <Link to="/new-component">Go to New Component | </Link>
-        <Link to="/">Go Home</Link>
+        <Link to="/">Go Home | </Link>
+        <Link to="/services/fx">Foreign Exchange | </Link>
+        <Link to="/services/fake">Fake People Award</Link>
       </header>
       <Routes>
         <Route path="/" index element={<Home />} />
-        <Route path="/new-component" element={<NewComponent />} />
+        <Route path="/services/fx" element={<ForeignExchange />} />
+        <Route path="/services/fake" element={<FakePeople />} />
       </Routes>
-      <p>{(!loadingStore.isLoading && data && data.name) ?? ""}</p>
     </>
   );
 });

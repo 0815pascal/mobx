@@ -9,14 +9,6 @@ import tsLogo from "./assets/typescript.svg";
 export const Home: React.FC = observer(() => {
   const { loadingStore } = useStores();
 
-  // Simulate a fetch request
-  const simulateFetch = async () => {
-    loadingStore.showLoader();
-    setTimeout(() => {
-      loadingStore.hideLoader();
-    }, 3000); // Simulates a network delay of 3 seconds
-  };
-
   return (
     <div>
       <div>
@@ -39,9 +31,10 @@ export const Home: React.FC = observer(() => {
       </div>
       <h1>Vite + React + MobX + TypeScript</h1>
       <div className="card">
-        <button onClick={simulateFetch}>Simulate Fetch</button>
+        <button onClick={loadingStore.simulateFetch}>Simulate Fetch</button>
         {loadingStore.isLoading ? <p>Loading...</p> : <p>Not Loading</p>}
       </div>
+    
     </div>
   );
 });
