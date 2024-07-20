@@ -12,6 +12,7 @@ interface ConversionResult {
 async function fetchExchangeRate(fromCurrency: CurrencyCode,
     toCurrency: CurrencyCode,
     date: string): Promise<number> {
+    console.debug(fromCurrency, toCurrency, date)
     // Placeholder for the actual API call
     // Here you would use `fetch` or any other HTTP client to make the API call.
     const fakeApiResponse = 0.2; // Simulated API response
