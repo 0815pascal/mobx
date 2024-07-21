@@ -5,6 +5,7 @@ import viteLogo from "/vite.svg";
 import reactLogo from "./assets/react.svg";
 import mobxLogo from "./assets/mobx.svg";
 import tsLogo from "./assets/typescript.svg";
+import { ContainedButton } from "./ContainedButton";
 
 export const Home: React.FC = observer(() => {
   const { loadingStore } = useStores();
@@ -33,6 +34,7 @@ export const Home: React.FC = observer(() => {
       <div className="card">
         <button onClick={loadingStore.simulateFetch}>Simulate Fetch</button>
         {loadingStore.isLoading ? <p>Loading...</p> : <p>Not Loading</p>}
+        <ContainedButton size={"large"} text={"Test"} />
       </div>
     
     </div>
