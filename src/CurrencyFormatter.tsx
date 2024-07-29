@@ -1,6 +1,6 @@
 import { forwardRef, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes } from "react";
 import { NumberFormatValues, NumericFormat } from "react-number-format";
-import { CURRENCY } from "./CurrencyTypes";
+import { CURRENCY } from "./types/CurrencyTypes";
 
 interface CustomChangeEvent {
   target: {
