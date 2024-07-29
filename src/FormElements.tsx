@@ -32,18 +32,6 @@ const FormElements = observer(() => {
         language={language}
         required
         label={label}
-        error='u gae'
-        dateValue={""} // Replace with dateValue from Redux store when uncommented
-        setDateValue={(value) => {
-            console.log(value)
-          /* dispatch(setDateValue(value)) */
-        }}
-        resetDateValue={() => {
-          /* dispatch(resetDateValue()) */
-        }}
-        restoreDateValue={() => {
-          /* dispatch(restoreDateValue()) */
-        }}
       />
       <button type="submit">Submit</button>
     </form>

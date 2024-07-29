@@ -12,15 +12,28 @@ interface DateFormat {
 interface DateInputProps {
   language?: Language;
   label: string;
-  dateValue: string; // Redux state for date value
-  setDateValue: (value: string) => void; // Redux action to set date value
-  resetDateValue: () => void; // Redux action to reset date value
-  restoreDateValue: () => void; // Redux action to restore date value
-  required?: boolean; // Optional required prop
-  error?: string; // Optional error prop to overwrite local error
+  required?: boolean;
+  error?: string;
 }
 
-const DateInput: React.FC<DateInputProps> = ({ language = "en", label, dateValue, setDateValue, resetDateValue, restoreDateValue, required = false, error: externalError }) => {
+// Define a branded type for NormalizedDate
+type NormalizedDate = string & { readonly __brand: unique symbol };
+
+// Function to check if a string is a valid NormalizedDate
+function isNormalizedDate(date: string): date is NormalizedDate {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  return regex.test(date);
+}
+
+// Function to normalize a date and return it as a NormalizedDate
+function toNormalizedDate(date: string): NormalizedDate {
+  if (!isNormalizedDate(date)) {
+    throw new Error("Invalid date format");
+  }
+  return date as NormalizedDate;
+}
+
+const DateInput: React.FC<DateInputProps> = ({ language = "en", label, required = false, error: externalError }) => {
   const getDateFormat = (lang: Language): DateFormat => {
     switch (lang) {
       case "en":
@@ -56,6 +69,7 @@ const DateInput: React.FC<DateInputProps> = ({ language = "en", label, dateValue
   const [localError, setLocalError] = useState<string>("");
   const [lastValidDate, setLastValidDate] = useState<string>("");
   const [showRestoreIcon, setShowRestoreIcon] = useState<boolean>(false);
+  const [normalizedDate, setNormalizedDate] = useState<NormalizedDate | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const cursorPosRef = useRef<number>(0);
 
@@ -97,6 +111,11 @@ const DateInput: React.FC<DateInputProps> = ({ language = "en", label, dateValue
     return date.isValid() && date.year() === year && date.month() + 1 === month && date.date() === day;
   };
 
+  const normalizeDate = (day: number, month: number, year: number): NormalizedDate => {
+    const normalized = dayjs(`${year}-${month}-${day}`, "YYYY-MM-DD").format("YYYY-MM-DD");
+    return toNormalizedDate(normalized);
+  };
+
   const validateDate = (date: string): boolean => {
     let day, month, year;
 
@@ -119,14 +138,18 @@ const DateInput: React.FC<DateInputProps> = ({ language = "en", label, dateValue
     month = parseInt(month, 10);
     year = parseInt(year, 10);
 
-    return isValidDate(day, month, year);
+    if (isValidDate(day, month, year)) {
+      setNormalizedDate(normalizeDate(day, month, year));
+      return true;
+    }
+
+    return false;
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     const formattedInput = formatDate(input);
     setValue(formattedInput);
-    setDateValue(formattedInput);
 
     const nextPos = formattedInput.split("").reduce((pos, char, idx) => {
       return /[0-9]/.test(char) ? idx + 1 : pos;
@@ -153,7 +176,7 @@ const DateInput: React.FC<DateInputProps> = ({ language = "en", label, dateValue
       cursorPosRef.current = 0;
       setCursorPosition(0);
       setShowRestoreIcon(lastValidDate !== "");
-      resetDateValue();
+      setNormalizedDate(null);
     } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
       e.preventDefault();
       setCursorPosition(cursorPosRef.current);
@@ -181,16 +204,11 @@ const DateInput: React.FC<DateInputProps> = ({ language = "en", label, dateValue
     }, 0);
     cursorPosRef.current = lastDigitPos;
     setCursorPosition(lastDigitPos);
-    restoreDateValue();
   };
 
   useEffect(() => {
     setCursorPosition(cursorPosRef.current);
   }, [value]);
-
-  useEffect(() => {
-    setValue(dateValue);
-  }, [dateValue]);
 
   useEffect(() => {
     setValue(mask);
@@ -219,9 +237,10 @@ const DateInput: React.FC<DateInputProps> = ({ language = "en", label, dateValue
           onFocus={handleFocus}
           style={{ height: "2.25rem", padding: "0 0 0 .75rem", fontSize: "1rem" }}
         />
-        {showRestoreIcon && <Undo2 onClick={handleRestore} size={20} style={{ marginLeft: "10px", cursor: "pointer" }} />}
+        {showRestoreIcon && <Undo2 onClick={handleRestore} size={20} style={{ marginLeft: "-2rem", cursor: "pointer" }} />}
       </div>
       <p style={{ color: "red", fontSize: "0.75rem", margin: "0", paddingLeft: ".875rem", textAlign: "left" }}>{displayError}</p>
+      {normalizedDate && <p style={{ fontSize: "0.75rem", margin: "0", paddingLeft: ".875rem", textAlign: "left" }}>Normalized Date: {normalizedDate}</p>}
     </div>
   );
 };
